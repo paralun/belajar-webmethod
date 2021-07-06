@@ -1,0 +1,4 @@
+ADDRESS, Gatot Subroto 89, Jakarta, PT. MAJU TERUS+JKT+10000
+ADDRESS, RA. Kartini No 29, Jakarta, CV. MAKMUR+JKT+10000
+ADDRESS, Medan Merdeka Selatan, Jakarta, ADHI JAYA+JKT+10000
+ADDRESS, Jalan Blora 123, Jakarta, CIPAGALO+JKT+10000
