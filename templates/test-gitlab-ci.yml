@@ -1,0 +1,47 @@
+stages:
+  - build-test
+  - deploy-test
+  - unit-test
+
+wmabe-build:
+  image: debian:stable
+  stage: build-test
+  before_script:
+    - 'which ssh-agent || (apt-get install openssh-client -y )'
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+    - chmod 700 ~/.ssh/id_rsa
+    - eval "$(ssh-agent -s)"
+    - ssh-add ~/.ssh/id_rsa
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - scp -r asset ${SSH_USER}@${SSH_IP}:/data/TESTSUITE/${PROJECT_NAME}/
+    - ssh ${SSH_USER}@${SSH_IP} "export=PROJECT_NAME=${PROJECT_NAME} && cd /data/TESTSUITE/${PROJECT_NAME}/asset/IS/Test/WmTestSuiteExecutor/ && sh build.sh"
+    
+wmabe-deploy:
+  image: debian:stable
+  stage: deploy-test
+  before_script:
+    - 'which ssh-agent || (apt-get install openssh-client -y )'
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+    - chmod 700 ~/.ssh/id_rsa
+    - eval "$(ssh-agent -s)"
+    - ssh-add ~/.ssh/id_rsa
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - ssh ${SSH_USER}@${SSH_IP} "export=PROJECT_NAME=${PROJECT_NAME} && cd /data/TESTSUITE/${PROJECT_NAME}/asset/IS/Test/WmTestSuiteExecutor/ && sh deploy.sh"
+
+wmabe-test:
+  image: debian:stable
+  stage: unit-test
+  before_script:
+    - 'which ssh-agent || (apt-get install openssh-client -y )'
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+    - chmod 700 ~/.ssh/id_rsa
+    - eval "$(ssh-agent -s)"
+    - ssh-add ~/.ssh/id_rsa
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - ssh ${SSH_USER}@${SSH_IP} "export=PROJECT_NAME=${PROJECT_NAME} && cd /data/TESTSUITE/${PROJECT_NAME}/asset/IS/Test/WmTestSuiteExecutor/ && sh testing.sh"

@@ -1,0 +1,3 @@
+FROM store/softwareag/webmethods-microservicesruntime:10.7
+COPY assets/IS/Packages/BelajarIS/ /opt/softwareag/IntegrationServer/packages/BelajarIS/
+COPY asset/IS/Test/BelajarISTest/ /opt/WmTest/BelajarIS/

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<webMethodsTestSuite description="" name="testAddNumber">
+    <webMethodsTestCase name="addNumberSuccess">
+        <service folder="com.paralun.test" name="addNumber">
+            <input>
+                <file filename="resources/test/data/input.xml"/>
+            </input>
+            <expected>
+                <file filename="resources/test/data/result.xml"/>
+            </expected>
+        </service>
+    </webMethodsTestCase>
+</webMethodsTestSuite>
